@@ -1,0 +1,179 @@
+{% load static %}
+<html>
+<head>
+    <title>House Price</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="icon" href="">
+
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="../static/css/searchzoom.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/131b541278.js"></script>
+
+
+    <!--  MAP PLUGIN FILES  -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+
+    <style>
+        html{
+            scroll-behavior: smooth;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            height: 60%
+        }
+
+        /* added by sichanchal1 - start */
+        .searchTextContainer{
+            position: absolute;
+            width: 100%;
+            height: 40%;
+            top: 60%;
+            left: 0;
+            border-top-right-radius: 25px;
+            border-top-left-radius: 25px;
+            overflow-x: hidden;
+            box-shadow: 0px 0px 10px grey;
+        }
+        .mapboxgl-ctrl-geocoder--suggestion-title, .mapboxgl-ctrl-geocoder--suggestion-address{
+            font-size: 16px;
+        }
+        #loader{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999999;
+            background: #F4F4F4;
+            display: block;
+            opacity: 1;
+            padding-top: 50%;
+        }
+        /* added by sichanchal1 - end */
+    </style>
+</head>
+
+<body class="bg-light">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js">
+    </script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+        type="text/css" />
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    <div id="map"></div>
+
+
+
+    <!-- added by sichanchal1 - start -->
+    <div class="searchTextContainer bg-white mx-auto">
+        <nav id="navbar" class="navbar navbar-expand-md bg-light justify-content-between navorcolor">
+            <a href="searchzoom" class="navbar-brand text-info"><strong>HOUSE|PRICE</strong></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"><i class="fas fa-bars text-white"></i></button>
+            <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="value.html">Value</a></li>
+                    <li class="nav-item"><a class="nav-link" href="overview.html">Overview</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Comparibles</a></li>
+                </ul>
+            </div>
+        </nav>
+        <h2 class="searchText text-center text-info"></h2>
+        <h2 class="priceText priceTextContainer text-center"></h2>
+    </div>
+    <!-- added by sichanchal1 - end -->
+    <script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoiYmhhcnZleTEwMTAiLCJhIjoiY2tlYWUxaHlqMDl2eTJybnpwY2VsajV1cyJ9.LLoxn4Qi2M9GSXy8EmQDWQ';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [-4.232114, 54.850623], // starting position [lng, lat]
+            zoom: 5 // starting zoom
+        });
+
+        map.addControl(
+            new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                // limit results to United Kingdom
+                countries: 'GB',
+            }), 'top-left'
+        );
+
+        // Add zoom and rotation controls to the map.
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    </script>
+
+    <!-- added by sichanchal1 - start -->
+    <script>
+        $(document).ready(function(){
+            $(".mapboxgl-ctrl-geocoder--input").on("input", function(){
+                operateLocation();
+            })
+            $(".mapboxgl-ctrl-geocoder--button").on("click", function(){
+                operateLocation();
+            })
+            $(".mapboxgl-ctrl-geocoder--input").on("change", function(){
+                operateLocation();
+            })
+
+            function operateLocation(){
+                // getting the input value from search box
+                let searchText = $(".mapboxgl-ctrl-geocoder--input").val();
+
+                // printing the input value on the page
+                $(".searchText").text(searchText);
+
+                // Sending location to server
+                $(".priceText").html('<div class="spinner-border text-info text-center"></div>');
+                var url = '/operate_location?searchText='+searchText;
+                var req = new XMLHttpRequest();
+                req.onreadystatechange = function(){
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (req.responseText == 'err'){
+                            $(".priceText").html('');
+                            $(".priceText").removeClass('text-success');
+                            $(".priceText").addClass('text-danger');
+                            $(".priceText").text("Location doesn't exist, Please enter the right location");
+                        }
+                        else{
+                            var data = req.responseText;
+                            $(".priceText").html('');
+                            $(".priceText").removeClass('text-danger');
+                            $(".priceText").addClass('text-success');
+                            $(".priceText").text("Price is : "+data);
+                        }
+                    }
+                }
+                req.open("GET", url, "true");
+                req.send();
+            }
+        });
+    </script>
+    <!-- added by sichanchal1 - end -->
+
+</body>
+
+</html>
