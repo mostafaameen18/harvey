@@ -1,0 +1,28 @@
+{% load static %}
+<html>
+
+<head>
+  <title>Reset Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+
+  <div class="main">
+
+    <img class="logocolour" src="{% static 'img/logocolourreal.png' %}"/>
+
+    <form class="form1" method="POST" action="{% url 'resetpasspro' code %}">
+    {%csrf_token%}
+      <input class="un " type="text" align="center" placeholder="New Password" name="pass">
+      <input class="un " type="text" align="center" placeholder="Repeat Password" name="reppass">
+      <input type="submit" class="submit" value="Reset" name="Reset">
+    </form>
+  </div>
+
+</body>
+
+</html>

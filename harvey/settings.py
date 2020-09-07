@@ -11,6 +11,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '@rmjhru3+b=27$u1lh)c-pr(57+5q_d5yj+2ryywuf_t*le)je'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'email'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -41,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'harvey2.urls'
+ROOT_URLCONF = 'harvey.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +65,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'harvey2.wsgi.application'
+WSGI_APPLICATION = 'harvey.wsgi.application'
 
 
 # Database
